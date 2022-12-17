@@ -13,3 +13,80 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+body {
+  background: #343d46;
+}
+
+li {
+  list-style: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+.box {
+  margin: 30px auto;
+  width: 300px;
+  height: 50px;
+}
+.container-1 {
+  width: 300px;
+  vertical-align: middle;
+  white-space: nowrap;
+  position: relative;
+}
+
+.container-1 input#search {
+  width: 300px;
+  height: 50px;
+  background: #2b303b;
+  border: none;
+  font-size: 10pt;
+  float: left;
+  color: #63717f;
+  padding-left: 45px;
+  border-radius: 5px;
+
+  transition: background 0.55s ease;
+}
+
+.container-1 .icon {
+  position: absolute;
+  top: 8px;
+  left: 5px;
+  z-index: 1;
+  color: #4f5b66;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  border: none;
+  display: inline-block;
+
+  transition: background 0.55s ease;
+}
+
+.container-1 input#search:hover,
+.container-1 input#search:focus,
+.container-1 input#search:active {
+  outline: none;
+  background: #ffffff;
+}
+
+.container-1 input#search:hover .icon,
+.container-1 input#search:focus .icon,
+.container-1 input#search:active .icon {
+  background: #ffffff;
+  border-radius: 3px solid green;
+}
+
+.icon:hover {
+  cursor: pointer;
+}
+
+.container-1 input#search:focus::placeholder {
+  color: white;
+}
