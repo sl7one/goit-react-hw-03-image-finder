@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types';
+
 import styled from 'styled-components';
 import ImageGalleryItem from './ImageGalleryItem';
 const GalleryContainer = styled.div`
@@ -24,3 +26,8 @@ const ImageGallery = ({ collection, onClick }) => {
 };
 
 export default ImageGallery;
+
+ImageGallery.propTypes = {
+  collection: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired,
+};

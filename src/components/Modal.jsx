@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Overlay = styled.div`
@@ -31,3 +32,9 @@ const Modal = ({ target, onClick, onPressEsc }) => {
 };
 
 export default Modal;
+
+Modal.propTypes = {
+  target: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onPressEsc: PropTypes.func.isRequired,
+};

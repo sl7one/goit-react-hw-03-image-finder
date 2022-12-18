@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import Searchbar from './Searchbar';
@@ -150,8 +151,6 @@ class App extends React.Component {
             radius="9"
             color="#4fa94d"
             ariaLabel="three-dots-loading"
-            wrapperStyle={{}}
-            wrapperClassName=""
             visible={true}
           />
         )}
@@ -165,3 +164,12 @@ class App extends React.Component {
 }
 
 export default App;
+
+ThreeDots.propTypes = {
+  height: PropTypes.string.isRequired,
+  width: PropTypes.string.isRequired,
+  radius: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+  visible: PropTypes.any.isRequired,
+};
