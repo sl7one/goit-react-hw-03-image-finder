@@ -42,29 +42,32 @@ class App extends React.Component {
     } catch (e) {
       console.log(e);
     } finally {
-      this.setState({ loader: false });
+      this.setState(prevState => ({ loader: !prevState.loader }));
     }
   }
 
   async componentDidUpdate(_, prevState) {
-    try {
-      const { query: prevQuery, currentPage: prevPage } = prevState;
-      const { query: currentQuery, currentPage } = this.state;
+    const { query: prevQuery, currentPage: prevPage } = prevState;
+    const { query: currentQuery, currentPage } = this.state;
 
-      if (prevQuery !== currentQuery || prevPage !== currentPage) {
+    if (prevQuery !== currentQuery || prevPage !== currentPage) {
+      try {
         const response = await axios.get(
           `https://pixabay.com/api/?q=${this.state.query}&page=${this.state.currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${PP}`
         );
         // console.log(response.data.hits, this.state.collection);
-        const result = uniqueItems(response.data.hits, this.state.collection);
+        const result = this.uniqueItems(
+          response.data.hits,
+          this.state.collection
+        );
         this.setState(prevState => ({
           collection: [...prevState.collection, ...result],
         }));
+      } catch (e) {
+        console.log(e);
+      } finally {
+        this.setState(prevState => ({ loader: !prevState.loader }));
       }
-    } catch (e) {
-      console.log(e);
-    } finally {
-      this.setState({ loader: false });
     }
   }
 
@@ -110,6 +113,14 @@ class App extends React.Component {
     console.log(event);
   };
 
+  uniqueItems = (newData, prevData) => {
+    const prevIds = prevData.map(el => el.id);
+    const result = newData.filter(el => {
+      return !prevIds.includes(el.id);
+    });
+    return result;
+  };
+
   render() {
     // console.log(this.state.collection.length);
     return (
@@ -120,7 +131,18 @@ class App extends React.Component {
             collection={this.state.collection}
             onClick={this.openItemInModal}
           />
-        ) : null}
+        ) : (
+          'Уточните поиск'
+        )}
+
+        {this.state.modal && (
+          <Modal
+            target={this.state.target}
+            onClick={this.closeModal}
+            onPressKey={this.onEscPress}
+          />
+        )}
+
         {this.state.loader && (
           <ThreeDots
             height="80"
@@ -133,13 +155,6 @@ class App extends React.Component {
             visible={true}
           />
         )}
-        {this.state.modal && (
-          <Modal
-            target={this.state.target}
-            onClick={this.closeModal}
-            onPressKey={this.onEscPress}
-          />
-        )}
 
         {this.state.collection.length > 0 ? (
           <Button onClick={this.onClickLoadMore} />
@@ -150,11 +165,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-function uniqueItems(newData, prevData) {
-  const prevIds = prevData.map(el => el.id);
-  const result = newData.filter(el => {
-    return !prevIds.includes(el.id);
-  });
-  return result;
-}

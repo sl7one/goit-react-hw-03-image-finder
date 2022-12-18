@@ -24,9 +24,3 @@ const ImageGallery = ({ collection, onClick }) => {
 };
 
 export default ImageGallery;
-
-{
-  /* <li key={el.id}>
-<img src={el.webformatURL} alt={el.largeImageURL} />
-</li>; */
-}
