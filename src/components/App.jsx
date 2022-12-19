@@ -72,6 +72,11 @@ class App extends React.Component {
     }
   }
 
+  onEscPress = boollean => {
+    console.log(boollean);
+    this.setState({ modal: boollean });
+  };
+
   onSubmit = event => {
     event.preventDefault();
     const { value } = event.target.elements.query;
@@ -108,10 +113,6 @@ class App extends React.Component {
       this.setState(prevState => ({ modal: !prevState.modal }));
     }
     // console.dir(event.target.nodeName);
-  };
-
-  onEscPress = event => {
-    console.log(event);
   };
 
   uniqueItems = (newData, prevData) => {

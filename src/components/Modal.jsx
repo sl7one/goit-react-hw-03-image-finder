@@ -1,3 +1,5 @@
+import React from 'react';
+
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -19,22 +21,37 @@ const Wrapper = styled.div`
   max-height: calc(100vh - 24px);
 `;
 
-const Modal = ({ target, onClick, onPressEsc }) => {
-  //   console.log(target.attributes.href.value);
-  const { value } = target.attributes.href;
-  return (
-    <Overlay className="overlay" onClick={onClick} onKeyDown={onPressEsc}>
-      <Wrapper className="modal">
-        <img src={value} alt={target.alt} />
-      </Wrapper>
-    </Overlay>
-  );
-};
+class Modal extends React.Component {
+  onEscPress = event => {
+    console.log(event);
+    if (event.code === 'Escape') {
+      this.props.onPressKey(false);
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.onEscPress);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.onEscPress);
+  }
+
+  render() {
+    const { value } = this.props.target.attributes.href;
+    return (
+      <Overlay className="overlay" onClick={this.props.onClick}>
+        <Wrapper className="modal">
+          <img src={value} alt={this.props.target.alt} />
+        </Wrapper>
+      </Overlay>
+    );
+  }
+}
 
 export default Modal;
 
 Modal.propTypes = {
   target: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
-  onPressEsc: PropTypes.func.isRequired,
+  onPressEsc: PropTypes.func,
 };
