@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import Searchbar from './Searchbar';
@@ -31,10 +30,11 @@ class App extends React.Component {
     currentPage: 1,
     modal: false,
     target: {},
-    loader: true,
+    loader: false,
   };
 
   async componentDidMount() {
+    this.setState({ loader: true });
     try {
       const response = await axios.get(
         `https://pixabay.com/api/?page=${this.state.currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${PP}`
@@ -43,7 +43,7 @@ class App extends React.Component {
     } catch (e) {
       console.log(e);
     } finally {
-      this.setState(prevState => ({ loader: !prevState.loader }));
+      this.setState({ loader: false });
     }
   }
 
@@ -52,36 +52,35 @@ class App extends React.Component {
     const { query: currentQuery, currentPage } = this.state;
 
     if (prevQuery !== currentQuery || prevPage !== currentPage) {
+      this.setState({ loader: true });
       try {
         const response = await axios.get(
           `https://pixabay.com/api/?q=${this.state.query}&page=${this.state.currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${PP}`
         );
         // console.log(response.data.hits, this.state.collection);
-        const result = this.uniqueItems(
-          response.data.hits,
-          this.state.collection
-        );
+        // const result = this.uniqueItems(
+        //   response.data.hits,
+        //   this.state.collection
+        // );
+
         this.setState(prevState => ({
-          collection: [...prevState.collection, ...result],
+          collection: [...prevState.collection, ...response.data.hits],
         }));
       } catch (e) {
-        console.log(e);
+        // console.log(e);
       } finally {
-        this.setState(prevState => ({ loader: !prevState.loader }));
+        this.setState({ loader: false });
       }
     }
   }
 
   onEscPress = boollean => {
-    console.log(boollean);
     this.setState({ modal: boollean });
   };
 
-  onSubmit = event => {
-    event.preventDefault();
-    const { value } = event.target.elements.query;
+  onSubmit = value => {
     this.setState({
-      query: value.toLowerCase(),
+      query: value,
       currentPage: 1,
       collection: [],
       loader: true,
@@ -92,13 +91,11 @@ class App extends React.Component {
     this.setState(prevState => {
       return {
         currentPage: prevState.currentPage + 1,
-        loader: true,
       };
     });
   };
 
   openItemInModal = event => {
-    // console.log(event);
     if (event.target.nodeName === 'IMG') {
       const { target } = event;
       this.setState(prevState => ({
@@ -110,9 +107,8 @@ class App extends React.Component {
 
   closeModal = event => {
     if (event.target.nodeName !== 'IMG') {
-      this.setState(prevState => ({ modal: !prevState.modal }));
+      this.setState({ modal: false });
     }
-    // console.dir(event.target.nodeName);
   };
 
   uniqueItems = (newData, prevData) => {
@@ -124,7 +120,6 @@ class App extends React.Component {
   };
 
   render() {
-    // console.log(this.state.collection.length);
     return (
       <Container>
         <Searchbar onSubmit={this.onSubmit} />
@@ -165,12 +160,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-ThreeDots.propTypes = {
-  height: PropTypes.string.isRequired,
-  width: PropTypes.string.isRequired,
-  radius: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
-  ariaLabel: PropTypes.string.isRequired,
-  visible: PropTypes.any.isRequired,
-};

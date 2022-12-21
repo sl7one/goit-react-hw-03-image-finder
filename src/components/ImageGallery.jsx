@@ -10,7 +10,6 @@ const GalleryContainer = styled.div`
 `;
 
 const ImageGallery = ({ collection, onClick }) => {
-  // console.log(collection);
   return (
     <GalleryContainer onClick={onClick}>
       {collection.map(el => (
@@ -28,6 +27,13 @@ const ImageGallery = ({ collection, onClick }) => {
 export default ImageGallery;
 
 ImageGallery.propTypes = {
-  collection: PropTypes.array.isRequired,
+  collection: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
+    })
+  ),
   onClick: PropTypes.func.isRequired,
 };

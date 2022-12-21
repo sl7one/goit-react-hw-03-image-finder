@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const ImgWrapper = styled.li`
@@ -29,3 +30,9 @@ const ImageGalleryItem = ({ small, large, alt }) => {
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+  small: PropTypes.string.isRequired,
+  large: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+};
