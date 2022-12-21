@@ -21,7 +21,6 @@ const Container = styled.div`
 `;
 const PP = 12;
 const KEY = `31355844-a483d10f60d89145c2ddc6122`;
-// axios.defaults.baseURL = `https://pixabay.com/api/?key=31355844-a483d10f60d89145c2ddc6122&q=`;
 
 class App extends React.Component {
   state = {
@@ -57,17 +56,12 @@ class App extends React.Component {
         const response = await axios.get(
           `https://pixabay.com/api/?q=${this.state.query}&page=${this.state.currentPage}&key=${KEY}&image_type=photo&orientation=horizontal&per_page=${PP}`
         );
-        // console.log(response.data.hits, this.state.collection);
-        // const result = this.uniqueItems(
-        //   response.data.hits,
-        //   this.state.collection
-        // );
 
         this.setState(prevState => ({
           collection: [...prevState.collection, ...response.data.hits],
         }));
       } catch (e) {
-        // console.log(e);
+        console.log(e);
       } finally {
         this.setState({ loader: false });
       }
@@ -98,10 +92,10 @@ class App extends React.Component {
   openItemInModal = event => {
     if (event.target.nodeName === 'IMG') {
       const { target } = event;
-      this.setState(prevState => ({
-        modal: !prevState.modal,
+      this.setState({
+        modal: true,
         target,
-      }));
+      });
     }
   };
 
@@ -111,13 +105,13 @@ class App extends React.Component {
     }
   };
 
-  uniqueItems = (newData, prevData) => {
-    const prevIds = prevData.map(el => el.id);
-    const result = newData.filter(el => {
-      return !prevIds.includes(el.id);
-    });
-    return result;
-  };
+  // uniqueItems = (newData, prevData) => {
+  //   const prevIds = prevData.map(el => el.id);
+  //   const result = newData.filter(el => {
+  //     return !prevIds.includes(el.id);
+  //   });
+  //   return result;
+  // };
 
   render() {
     return (
